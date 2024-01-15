@@ -1,0 +1,12 @@
+.maincard{
+    padding: 2em;
+}
+
+.redText{
+    color: red;
+}
+
+.buttons{
+    margin: 0 auto;
+    display:table;
+}

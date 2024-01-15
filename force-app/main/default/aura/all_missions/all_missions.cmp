@@ -1,0 +1,67 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 01-15-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<aura:component controller="AllMissionsCtrl" 
+    implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"
+    access="global"
+    >
+
+    <aura:attribute name="mydata" type="Object[]"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+    <lightning:messageChannel type="MissionDetail__c" aura:id="sampleMissionDetail" onMessage="{!c.handleMessage}" scope="APPLICATION"/>
+
+    <lightning:card>
+    <h2 id="element-with-table-label" class="slds-text-heading_medium slds-m-bottom_xx-small">All Missions
+        <lightning:icon iconName="utility:trailhead_alt" />
+    </h2>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-labelledby="element-with-table-label other-element-with-table-label">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Rank">Rank</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Mission">Mission</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Guild">Guild</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Status">Status</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.mydata}" var="data">
+                <tr class="slds-hint-parent" onclick="{!c.showDetail}" 
+                    data-recordid="{!data.Id}" 
+                    data-status="{!data.missionStatus}"
+                    data-herorank="{!data.heroRank}"
+                    data-isowner="{!data.isOwner}"
+                    data-missioncount="{!data.missionCount}"
+                >
+                    <th data-label="missionRank" scope="row">
+                        <div class="slds-truncate rankClass" title="Cloudhub">{!data.missionRank}</div>
+                    </th>
+                    <th data-label="missionSubject" scope="row">
+                        <div class="slds-truncate" title="Cloudhub">{!data.missionSubject}</div>
+                    </th>
+                    <th data-label="missionGuildName" scope="row">
+                        <div class="slds-truncate" title="Cloudhub">{!data.missionGuildName}</div>
+                    </th>
+                    <th data-label="missionStatus" scope="row">
+                        <div class="{!data.cssClass}" title="Cloudhub">{!data.missionStatus}</div>
+                    </th>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+    </lightning:card>
+
+</aura:component>
