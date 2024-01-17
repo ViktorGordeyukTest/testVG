@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 01-15-2024
+ * @last modified on  : 01-17-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public inherited sharing class MissionAssignmentTriggerHandler {
@@ -11,7 +11,6 @@ public inherited sharing class MissionAssignmentTriggerHandler {
         if(Trigger.IsAfter){
             if(Trigger.IsUpdate){
                 MissionAssignmentTriggerService.handleMissionAssignments();
-                MissionAssignmentTriggerService.notifyMissionOwner();
             }
         }
     }

@@ -30,8 +30,8 @@ export default class Missiondetail extends LightningElement {
     @track isShowAccept = false;
     @track isShowComplete = false;
 
-    heroRank;
-    isOwner;
+    @track heroRank;
+    @track isOwner;
 
     label = { emptyMessage };
 
@@ -57,7 +57,7 @@ export default class Missiondetail extends LightningElement {
             let Id = message.Id;
             let status = message.recordData.status;
             this.heroRank = message.recordData.heroRank;
-            this.isOwner = message.recordData.isowner;
+            this.isOwner = message.recordData.isowner === 'true' ? true : false;
             console.log('this.heroRank => ',this.heroRank);
             this.getData(Id, status);
         }
@@ -120,9 +120,12 @@ export default class Missiondetail extends LightningElement {
         ){
             let messageTxt = 'Unfortunately, you are too weak at the moment to take on this work. Come back when you reach rank ';
             if(RANKS.indexOf(missionRank) === 0){
-                messageTxt += missionRank +', '+(RANKS.indexOf(missionRank) + 1);
+
+                messageTxt += missionRank +', '+RANKS[(RANKS.indexOf(missionRank) + 1)];
+            } else if(RANKS.indexOf(missionRank) === (RANKS.length - 1)){
+                messageTxt += RANKS[(RANKS.indexOf(missionRank) - 1)] +', '+ missionRank;
             } else {
-                messageTxt += (RANKS.indexOf(missionRank) - 1) +', '+ missionRank +', '+(RANKS.indexOf(missionRank) + 1);
+                messageTxt += RANKS[(RANKS.indexOf(missionRank) - 1)] +', '+ missionRank +', '+RANKS[(RANKS.indexOf(missionRank) + 1)];
             }
             let messageObj = {
                 message : messageTxt,
@@ -167,7 +170,14 @@ export default class Missiondetail extends LightningElement {
                 this.isShowComplete = false;
               })
               .catch((error) => {
-                this.error = error;
+                console.log(error);
+                let messageObj = {
+                    message : error,
+                    title : "ERROR",
+                    variant: "error"
+                };
+    
+                this.showToast(messageObj);
               });
 
       }

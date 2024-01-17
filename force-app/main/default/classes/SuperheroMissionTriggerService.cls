@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 01-15-2024
+ * @last modified on  : 01-17-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public inherited sharing class SuperheroMissionTriggerService {
@@ -19,7 +19,9 @@ public inherited sharing class SuperheroMissionTriggerService {
             emailsAddresses.add(hero.Contact__r.Email);
         }
 
-        EmailMessagingService.sendEmails(emailsAddresses, 'Mission Created, please check new advvetures', 'Mission Created');
+        if(!emailsAddresses.isEmpty() && !Test.isRunningTest()){
+            EmailMessagingService.sendEmails(emailsAddresses, 'Mission Created, please check new advvetures', 'Mission Created');
+        }
 
     }
 }

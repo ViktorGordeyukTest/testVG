@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 01-15-2024
+ * @last modified on  : 01-17-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public inherited sharing class MissionAssignmentTriggerService {
@@ -12,6 +12,7 @@ public inherited sharing class MissionAssignmentTriggerService {
         Set<Id> missionIds = new Set<Id>();
         Set<Id> missionAssignmentIds = new Set<Id>();
         List<Mission_Assignment__c> misionAssignmentsFailed = new List<Mission_Assignment__c>();
+        List<String> emailsAddresses = new List<String>();
 
         for(Mission_Assignment__c mAssignment : ((List<Mission_Assignment__c>)Trigger.new)){
             if(Trigger.oldMap.get(mAssignment.Id) != null && 
@@ -37,27 +38,14 @@ public inherited sharing class MissionAssignmentTriggerService {
         if(!misionAssignmentsFailed.isEmpty()){
             update misionAssignmentsFailed;
         }
-    }
-
-    public static void notifyMissionOwner(){
-
-        List<String> emailsAddresses = new List<String>();
-        Set<Id> missionIds = new Set<Id>();
-
-        for(Mission_Assignment__c mAssignment : ((List<Mission_Assignment__c>)Trigger.new)){
-            if(Trigger.oldMap.get(mAssignment.Id) != null && 
-                ((Mission_Assignment__c)Trigger.oldMap.get(mAssignment.Id)).Status__c != mAssignment.Status__c &&
-                mAssignment.Status__c.equalsIgnoreCase('Completed'))
-            {
-                missionIds.add(mAssignment.Mission__c);
-            }
-        }
 
         for(Superhero_Mission__c mission : [SELECT OwnerId, Owner.Email FROM Superhero_Mission__c WHERE Id IN :missionIds]){
             emailsAddresses.add(mission.Owner.Email);
         }
 
-        EmailMessagingService.sendEmails(emailsAddresses, 'Mission Completed', 'COMPLETED');
-
+        if(!emailsAddresses.isEmpty() && !Test.isRunningTest()){
+            EmailMessagingService.sendEmails(emailsAddresses, 'Mission Completed', 'COMPLETED');
+        }
     }
+
 }

@@ -1,13 +1,15 @@
 ({
     getData: function(cmp, helper){
+        console.log('getData');
         var action = cmp.get('c.getAllMissions');
         action.setCallback(this, $A.getCallback(function (response) {
             var state = response.getState();
             console.log('state = ',state);
             if (state === "SUCCESS") {
                 let data = JSON.parse(response.getReturnValue());
-                console.log('data = ',data);
-                cmp.set('v.mydata', data);
+                let curData = cmp.get('v.mydata');
+                curData = data;
+                cmp.set('v.mydata', curData);
                 
             } else if (state === "ERROR") {
                 var errors = response.getError();

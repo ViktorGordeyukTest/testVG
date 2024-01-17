@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 01-15-2024
+ * @last modified on  : 01-17-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public with sharing class AllMissionsCtrl {
@@ -34,6 +34,10 @@ public with sharing class AllMissionsCtrl {
             WHERE Guild__c =: HERO.Guild__c OR Is_Public__c = true
             ORDER BY CreatedDate DESC
         ];
+
+        System.debug(missions);
+        System.debug(HERO);
+
 
         for(Superhero_Mission__c mission : missions){
             String status = '';

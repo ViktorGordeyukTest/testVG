@@ -9,8 +9,11 @@
 
     handleMessage: function(cmp, message, helper){
         console.log('message = ',message);
+        console.log('message get = ',message.getParam("recordData"));
         if (message != null && message.getParam("recordData") != null &&  message.getParam("recordData").type === '0') {
-            helper.getData(cmp, helper);
+           cmp.set('v.mydata', []); 
+           helper.getData(cmp, helper);
+            
         }
     }
 })
