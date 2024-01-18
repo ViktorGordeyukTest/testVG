@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 01-17-2024
+ * @last modified on  : 01-18-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 @isTest
@@ -79,8 +79,6 @@ public class AppTest {
 
     @isTest static void testGetAllMissions() {
         User us = [SELECT Id FROM User WHERE LastName = 'VGTESTAPPSA' LIMIT 1];
-        System.debug(us);
-        System.debug([SELECT Count() FROM Superhero_Mission__c]);
         PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'Hero_Admin'];
         insert new PermissionSetAssignment(AssigneeId = us.Id, PermissionSetId = ps.Id);
         System.runAs(us){
@@ -116,5 +114,19 @@ public class AppTest {
         Assert.areEqual(mas[0].Status__c, 'Completed');
         }
         
+    }
+
+    @isTest static void testEmailMessagingBatch() {
+        Set<Id> guilds = new Set<Id>();
+        for(Guild__c guild : [SELECT Id FROM Guild__c]){
+            guilds.add(guild.Id);
+        }
+        Test.startTest();
+            EmailMessagingBatch batchEmail = new EmailMessagingBatch(guilds);
+            Database.executeBatch(batchEmail);
+        Test.stopTest();
+
+        Assert.areEqual(Database.countquery('SELECT COUNT() FROM Hero__c'), 2);  
+
     }
 }
